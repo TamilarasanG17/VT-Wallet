@@ -1048,7 +1048,7 @@
         });
 
         // Define the base URL for your backend API
-        const API_BASE_URL = 'http://localhost:5000/api'; // Make sure this matches your backend server port
+        const API_BASE_URL = 'https://vt-wallet.onrender.com/api'; // Make sure this matches your backend server port
 
         // --- Utility Functions ---
 
@@ -1063,7 +1063,7 @@
                     showConfirmButton: false,
                     timer: 2000
                 }).then(() => {
-                    window.location.href = '/';
+                    window.location.href = 'https://vt-wallet.onrender.com/';
                 });
                 return new Promise(() => {}); // Prevent further execution
             }
@@ -1089,7 +1089,7 @@
                             timer: 2000
                         }).then(() => {
                             localStorage.removeItem('jwtToken');
-                            window.location.href = '/';
+                            window.location.href = 'https://vt-wallet.onrender.com/';
                         });
                         return new Promise(() => {}); // Prevent further execution
                     }
@@ -1156,7 +1156,7 @@
                     showConfirmButton: false,
                     timer: 1500
                 }).then(() => {
-                    window.location.href = '/'; // Redirect to the authentication page
+                    window.location.href = 'https://vt-wallet.onrender.com/'; // Redirect to the authentication page
                 });
             }
         }
@@ -1222,7 +1222,7 @@
                     showConfirmButton: false,
                     timer: 2000
                 }).then(() => {
-                    window.location.href = '/';
+                    window.location.href = 'https://vt-wallet.onrender.com/';
                 });
                 return;
             }
