@@ -37,15 +37,7 @@
             padding: 1rem; /* Default padding for larger screens */
         }
         
-         /* .header-container {
-            width: auto;
-            /* display: flex; */
-            /* justify-content: center;
-            align-items: center;
-            flex-wrap: wrap; */
-            /* margin-bottom: 30px; */
-            /* padding: 0 20px; 
-        }  */
+        
         
         @media (min-width: 768px) {
             .header-container {
@@ -1048,7 +1040,7 @@
         });
 
         // Define the base URL for your backend API
-        const API_BASE_URL = 'https://vt-wallet.onrender.com/api'; // Make sure this matches your backend server port
+        const API_BASE_URL = 'https://vt-wallet.onrender.com/api';
 
         // --- Utility Functions ---
 
@@ -1063,7 +1055,7 @@
                     showConfirmButton: false,
                     timer: 2000
                 }).then(() => {
-                    window.location.href = 'https://vt-wallet.onrender.com/';
+                    window.location.href = '/';
                 });
                 return new Promise(() => {}); // Prevent further execution
             }
@@ -1089,7 +1081,7 @@
                             timer: 2000
                         }).then(() => {
                             localStorage.removeItem('jwtToken');
-                            window.location.href = 'https://vt-wallet.onrender.com/';
+                            window.location.href = '/';
                         });
                         return new Promise(() => {}); // Prevent further execution
                     }
@@ -1156,7 +1148,7 @@
                     showConfirmButton: false,
                     timer: 1500
                 }).then(() => {
-                    window.location.href = 'https://vt-wallet.onrender.com/'; // Redirect to the authentication page
+                    window.location.href = '/'; // Redirect to the authentication page
                 });
             }
         }
@@ -1222,7 +1214,7 @@
                     showConfirmButton: false,
                     timer: 2000
                 }).then(() => {
-                    window.location.href = 'https://vt-wallet.onrender.com/';
+                    window.location.href = '/';
                 });
                 return;
             }
@@ -1277,7 +1269,7 @@
 
         async function loadExpenses() {
             try {
-                const response = await fetchAuthenticated(`${API_BASE_URL}/expenses`);
+                const response = await fetchAuthenticated('https://vt-wallet.onrender.com/api/expenses');
                 const data = await response.json();
                 expenses = data.map(exp => ({
                     ...exp,
@@ -1291,7 +1283,7 @@
 
         async function addExpense(expenseData) {
             try {
-                const response = await fetchAuthenticated(`${API_BASE_URL}/expenses`, {
+                const response = await fetchAuthenticated('https://vt-wallet.onrender.com/api/expenses', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(expenseData)
@@ -1321,7 +1313,7 @@
 
             if (isConfirmed) {
                 try {
-                    const response = await fetchAuthenticated(`${API_BASE_URL}/history/${type}/${id}`, {
+                    const response = await fetchAuthenticated(`https://vt-wallet.onrender.com/api/history/${type}/${id}`, {
                         method: 'DELETE'
                     });
                     const result = await response.json();
@@ -1380,9 +1372,9 @@
             let lastMonthExpenses = [];
             let lastMonthCategorySummary = [];
             try {
-                const response = await fetchAuthenticated(`${API_BASE_URL}/expenses/monthly`);
+                const response = await fetchAuthenticated('https://vt-wallet.onrender.com/api/expenses/monthly');
                 lastMonthExpenses = await response.json();
-                const categoryResponse = await fetchAuthenticated(`${API_BASE_URL}/expenses/category-summary`);
+                const categoryResponse = await fetchAuthenticated('https://vt-wallet.onrender.com/api/expenses/category-summary');
                 lastMonthCategorySummary = await categoryResponse.json();
             } catch (error) {
                 console.error("Failed to fetch data for PDF:", error);
@@ -1508,7 +1500,7 @@
         async function renderDailyExpenses() {
             dailyExpensesTableBody.innerHTML = '';
             try {
-                const response = await fetchAuthenticated(`${API_BASE_URL}/expenses/daily`);
+                const response = await fetchAuthenticated('https://vt-wallet.onrender.com/api/expenses/daily');
                 const recentExpenses = await response.json();
                 recentExpenses.forEach(exp => {
                     const row = dailyExpensesTableBody.insertRow();
@@ -1527,7 +1519,7 @@
         async function renderWeeklyExpenses() {
             weeklyExpensesTableBody.innerHTML = '';
             try {
-                const response = await fetchAuthenticated(`${API_BASE_URL}/expenses/weekly`);
+                const response = await fetchAuthenticated('https://vt-wallet.onrender.com/api/expenses/weekly');
                 const currentWeekExpenses = await response.json();
                 currentWeekExpenses.forEach(exp => {
                     const row = weeklyExpensesTableBody.insertRow();
@@ -1546,7 +1538,7 @@
         async function renderMonthlyExpenses() {
             monthlyExpensesTableBody.innerHTML = '';
             try {
-                const response = await fetchAuthenticated(`${API_BASE_URL}/expenses/monthly`);
+                const response = await fetchAuthenticated('https://vt-wallet.onrender.com/api/expenses/monthly');
                 const currentMonthExpenses = await response.json();
                 monthlyDataForPdf.monthlyExpenses = currentMonthExpenses; // Save for PDF
                 currentMonthExpenses.forEach(exp => {
@@ -1566,7 +1558,7 @@
         async function renderCategoryWiseExpenses() {
             categoryExpensesTableBody.innerHTML = '';
             try {
-                const response = await fetchAuthenticated(`${API_BASE_URL}/expenses/category-summary`);
+                const response = await fetchAuthenticated('https://vt-wallet.onrender.com/api/expenses/category-summary');
                 const categorySummary = await response.json();
                 monthlyDataForPdf.categorySummary = categorySummary; // Save for PDF
                 categorySummary.forEach(item => {
@@ -1585,7 +1577,7 @@
         async function renderTopSpendingItems() {
             topSpendingTableBody.innerHTML = '';
             try {
-                const response = await fetchAuthenticated(`${API_BASE_URL}/expenses/top-spending`);
+                const response = await fetchAuthenticated('https://vt-wallet.onrender.com/api/expenses/top-spending');
                 const top10Items = await response.json();
                 top10Items.forEach(exp => {
                     const row = topSpendingTableBody.insertRow();
@@ -1628,7 +1620,7 @@
             let prevMonthExpenses = [];
 
             try {
-                const currentMonthResponse = await fetchAuthenticated(`${API_BASE_URL}/expenses/monthly`);
+                const currentMonthResponse = await fetchAuthenticated('https://vt-wallet.onrender.com/api/expenses/monthly');
                 currentMonthExpenses = await currentMonthResponse.json();
 
                 prevMonthExpenses = expenses.filter(exp =>
@@ -1716,7 +1708,7 @@
 
             // --- Monthly Category Distribution Pie Chart ---
             try {
-                const response = await fetchAuthenticated(`${API_BASE_URL}/expenses/category-summary`);
+                const response = await fetchAuthenticated('https://vt-wallet.onrender.com/api/expenses/category-summary');
                 const categorySummary = await response.json();
 
                 const pieChartLabels = categorySummary.map(item => item.category.charAt(0).toUpperCase() + item.category.slice(1));
@@ -1824,7 +1816,7 @@
 
             // --- Weekly Spending Trend Bar Chart ---
             try {
-                const response = await fetchAuthenticated(`${API_BASE_URL}/history/weekly`);
+                const response = await fetchAuthenticated('https://vt-wallet.onrender.com/api/history/weekly');
                 const weeklyHistory = await response.json();
 
                 const weeklySpending = {};
@@ -1906,7 +1898,7 @@
 
             // --- Monthly Spending Trend Bar Chart ---
             try {
-                const response = await fetchAuthenticated(`${API_BASE_URL}/history/monthly`);
+                const response = await fetchAuthenticated('https://vt-wallet.onrender.com/api/history/monthly');
                 const monthlyHistory = await response.json();
 
                 const monthlySpending = {};
@@ -2009,7 +2001,7 @@
             const viewType = historyViewSelect.value; // 'weekly' or 'monthly'
 
             try {
-                const response = await fetchAuthenticated(`${API_BASE_URL}/history/${viewType}`);
+                const response = await fetchAuthenticated(`https://vt-wallet.onrender.com/api/history/${viewType}`);
                 const historicalPeriods = await response.json();
 
                 // Sort the periods to ensure newest first
