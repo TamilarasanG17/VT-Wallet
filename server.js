@@ -591,8 +591,11 @@ app.delete('/api/history/:type/:id', protect, async (req, res) => {
 });
 
 // Serve the single index.html file for all frontend routes
-app.get(['/', '/login', '/otp-verify', '/forgot-password', '/update-password', '/expanse'], (req, res) => {
+app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+app.get('/expanse', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'Expanse.html'));
 });
 
 
