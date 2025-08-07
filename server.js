@@ -589,6 +589,11 @@ app.get(['/', '/login', '/otp-verify', '/forgot-password', '/update-password', '
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+app.get('/expanse', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'Expanse.html'));
+});
+
+
 
 // Start the server
 app.listen(PORT, () => {
