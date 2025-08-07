@@ -90,9 +90,15 @@ const protect = async (req, res, next) => {
 app.post('/api/auth/register', async (req, res) => {
     const { username, email, password } = req.body;
     try {
-        const userExists = await User.findOne({ email });
-        if (userExists) {
+        // Check if a user with the given email already exists
+        const emailExists = await User.findOne({ email });
+        if (emailExists) {
             return res.status(400).json({ message: 'User already exists with that email' });
+        }
+        // Check if a user with the given username already exists
+        const usernameExists = await User.findOne({ username });
+        if (usernameExists) {
+            return res.status(400).json({ message: 'User already exists with that username' });
         }
 
         const user = await User.create({ username, email, password, isVerified: false });
@@ -237,7 +243,7 @@ app.post('/api/auth/verify-otp', async (req, res) => {
                 user.isVerified = true; // Mark user as verified after first successful OTP
                 await user.save();
             }
-            const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+            const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
             return res.status(200).json({ message: 'OTP verified successfully! Redirecting...', token });
         } else {
             return res.status(400).json({ message: 'Invalid OTP purpose.' });
