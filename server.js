@@ -19,7 +19,13 @@ const PORT = process.env.PORT || 5000;
 
 
 // Middleware
-app.use(cors()); // Enable Cross-Origin Resource Sharing
+const allowedOrigin = 'https://vt-wallet.onrender.com';
+
+app.use(cors({
+    origin: allowedOrigin,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true,
+})); // Enable Cross-Origin Resource Sharing
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.static(path.join(__dirname, "public"))); // Serve static files from the 'public' directory
 
@@ -591,13 +597,17 @@ app.delete('/api/history/:type/:id', protect, async (req, res) => {
 });
 
 // Serve the single index.html file for all frontend routes
-app.get(['/', '/login', '/otp-verify', '/forgot-password', '/update-password', '/expanse'], (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// app.get(['/', '/login', '/otp-verify', '/forgot-password', '/update-password', '/expanse'], (req, res) => {
+//     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// });
 
-app.get('/expanse', (req, res) => {
+app.get('/expanse.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'Expanse.html'));
 });
+
+app.get( '*',(req,res) =>{
+        res.sendFile(path.join(__dirname, 'public', 'index.html'));
+})
 
 
 // Start the server
