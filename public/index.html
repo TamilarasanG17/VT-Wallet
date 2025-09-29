@@ -1,836 +1,829 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VT Expanse Tracker</title>
-    <link rel="icon" href="/logo.png"> <!-- Updated to absolute path -->
-    <!-- SweetAlert2 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <style>
-        /* Embedded CSS from style.css */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VT Expanse Tracker</title>
+    <link rel="icon" href="./logo.png">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        /* Embedded CSS from style.css */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            color: #333;
-            overflow-x: hidden; /* Prevent horizontal scroll on small screens */
-        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+            overflow-x: hidden; /* Prevent horizontal scroll on small screens */
+        }
 
-        .container {
-            background-color: #fff;
-            padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            box-sizing: border-box;
-            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-        }
-        
-        .logo {
-            max-width: 250px;
-            height: 100px;
-            margin: 0 auto 1.5rem auto; /* Centered with auto margins */
-            display: block;
-        }
+        .container {
+            background-color: #fff;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-sizing: border-box;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        
+        .logo {
+            max-width: 250px;
+            height: 100px;
+            margin: 0 auto 1.5rem auto; /* Centered with auto margins */
+            display: block;
+        }
 
-        .hidden {
-            display: none;
-            opacity: 0;
-            transform: translateY(20px);
-        }
+        .hidden {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+        }
 
-        .visible {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-        h2 {
-            color: #1a202c;
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
+        h2 {
+            color: #1a202c;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
 
-        h1 {
-            color: #2d3748;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            font-weight: 800;
-        }
+        h1 {
+            color: #2d3748;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
 
-        .form-group {
-            margin-bottom: 1.25rem;
-            text-align: left;
-        }
+        .form-group {
+            margin-bottom: 1.25rem;
+            text-align: left;
+        }
 
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: #4a5568;
-        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #4a5568;
+        }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid #cbd5e0;
-            border-radius: 8px;
-            font-size: 1rem;
-            box-sizing: border-box;
-            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
 
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="password"]:focus {
-            outline: none;
-            border-color: #4299e1;
-            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
-        }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+        }
 
-        button {
-            width: 100%;
-            padding: 0.9rem 1.25rem;
-            background-color: #4299e1;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.1s ease;
-            box-shadow: 0 4px 10px rgba(66, 153, 225, 0.3);
-        }
+        button {
+            width: 100%;
+            padding: 0.9rem 1.25rem;
+            background-color: #4299e1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            box-shadow: 0 4px 10px rgba(66, 153, 225, 0.3);
+        }
 
-        button:hover {
-            background-color: #3182ce;
-            transform: translateY(-1px);
-        }
+        button:hover {
+            background-color: #3182ce;
+            transform: translateY(-1px);
+        }
 
-        button:active {
-            transform: translateY(0);
-        }
+        button:active {
+            transform: translateY(0);
+        }
 
-        .message {
-            margin-top: 1.5rem;
-            padding: 0.8rem 1rem;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            text-align: center;
-        }
+        .message {
+            margin-top: 1.5rem;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-align: center;
+        }
 
-        .message.success {
-            background-color: #e6fffa;
-            color: #38a169;
-            border: 1px solid #9ae6b4;
-        }
+        .message.success {
+            background-color: #e6fffa;
+            color: #38a169;
+            border: 1px solid #9ae6b4;
+        }
 
-        .message.error {
-            background-color: #fff5f5;
-            color: #e53e3e;
-            border: 1px solid #feb2b2;
-        }
+        .message.error {
+            background-color: #fff5f5;
+            color: #e53e3e;
+            border: 1px solid #feb2b2;
+        }
 
-        p {
-            margin-top: 1.5rem;
-            font-size: 0.95rem;
-            color: #4a5568;
-        }
+        p {
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            color: #4a5568;
+        }
 
-        p a {
-            color: #4299e1;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s ease;
-        }
+        p a {
+            color: #4299e1;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
 
-        p a:hover {
-            color: #3182ce;
-            text-decoration: underline;
-        }
+        p a:hover {
+            color: #3182ce;
+            text-decoration: underline;
+        }
 
-        /* Specific styling for OTP input */
-        .otp-input-group {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 1.25rem;
-        }
+        /* Specific styling for OTP input */
+        .otp-input-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 1.25rem;
+        }
 
-        .otp-input-group input {
-            width: 50px; /* Adjust width for 4 digits */
-            height: 50px;
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            border: 1px solid #cbd5e0;
-            border-radius: 8px;
-            -moz-appearance: textfield; /* Hide arrows for number input in Firefox */
-        }
+        .otp-input-group input {
+            width: 50px; /* Adjust width for 4 digits */
+            height: 50px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            -moz-appearance: textfield; /* Hide arrows for number input in Firefox */
+        }
 
-        /* Hide arrows for number input in Chrome, Safari, Edge */
-        .otp-input-group input::-webkit-outer-spin-button,
-        .otp-input-group input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+        /* Hide arrows for number input in Chrome, Safari, Edge */
+        .otp-input-group input::-webkit-outer-spin-button,
+        .otp-input-group input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
 
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            .container {
-                margin: 1rem;
-                padding: 1.5rem;
-            }
-            h2 {
-                font-size: 1.5rem;
-            }
-            button {
-                padding: 0.8rem 1rem;
-                font-size: 1rem;
-            }
-            .otp-input-group input {
-                width: 45px;
-                height: 45px;
-                font-size: 1.3rem;
-            }
-            .logo {
-                max-width: 200px;
-            }
-        }
-        @media (max-width: 300px) {
-            .container {
-                padding: 1rem;
-                max-width: 280px;
-            }
-            h2 {
-                font-size: 1.25rem;
-                margin-bottom: 1rem;
-            }
-            .otp-input-group {
-                gap: 5px;
-            }
-            .otp-input-group input {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-            }
-            .form-group label {
-                font-size: 0.8rem;
-            }
-            .form-group input {
-                font-size: 0.9rem;
-                padding: 0.7rem 0.8rem;
-            }
-            button {
-                font-size: 1rem;
-                padding: 0.8rem;
-            }
-            p {
-                font-size: 0.9rem;
-            }
-            .logo {
-                max-width: 150px;
-            }
-        }
-    </style>
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+            button {
+                padding: 0.8rem 1rem;
+                font-size: 1rem;
+            }
+            .otp-input-group input {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+            .logo {
+                max-width: 200px;
+            }
+        }
+        @media (max-width: 300px) {
+            .container {
+                padding: 1rem;
+                max-width: 280px;
+            }
+            h2 {
+                font-size: 1.25rem;
+                margin-bottom: 1rem;
+            }
+            .otp-input-group {
+                gap: 5px;
+            }
+            .otp-input-group input {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            .form-group label {
+                font-size: 0.8rem;
+            }
+            .form-group input {
+                font-size: 0.9rem;
+                padding: 0.7rem 0.8rem;
+            }
+            button {
+                font-size: 1rem;
+                padding: 0.8rem;
+            }
+            p {
+                font-size: 0.9rem;
+            }
+            .logo {
+                max-width: 150px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Register Section -->
-    <div id="register-section" class="container visible">
-        <img src="/logo.png" alt="VT Expanse Tracker Logo" class="logo"> <!-- Updated to absolute path -->
-        <h2>Register Account</h2>
-        <form id="registerForm">
-            <div class="form-group">
-                <label for="regUsername">Username</label>
-                <input type="text" id="regUsername" name="username" placeholder="Enter the Username" required>
-            </div>
-            <div class="form-group">
-                <label for="regEmail">Email</label>
-                <input type="email" id="regEmail" name="email" placeholder="Enter the Email ID" required>
-            </div>
-            <div class="form-group">
-                <label for="regPassword">Password</label>
-                <input type="password" id="regPassword" name="password" placeholder="Enter the Password" required>
-            </div>
-            <button type="submit" id="registerButton">Register</button>
-        </form>
-        <!-- Messages will be handled by SweetAlert2 -->
-        <p>Already have an account? <a href="#" id="showLogin">Login here</a></p>
-    </div>
+    <!-- Register Section -->
+    <div id="register-section" class="container visible">
+        <img src="./logo.png" alt="VT Expanse Tracker Logo" class="logo">
+        <h2>Register Account</h2>
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="regUsername">Username</label>
+                <input type="text" id="regUsername" name="username" placeholder="Enter the Username" required>
+            </div>
+            <div class="form-group">
+                <label for="regEmail">Email</label>
+                <input type="email" id="regEmail" name="email" placeholder="Enter the Email ID" required>
+            </div>
+            <div class="form-group">
+                <label for="regPassword">Password</label>
+                <input type="password" id="regPassword" name="password" placeholder="Enter the Password" required>
+            </div>
+            <button type="submit" id="registerButton">Register</button>
+        </form>
+        <!-- Messages will be handled by SweetAlert2 -->
+        <p>Already have an account? <a href="#" id="showLogin">Login here</a></p>
+    </div>
 
-    <!-- Login Section -->
-    <div id="login-section" class="container hidden">
-        <img src="/logo.png" alt="VT Expanse Tracker Logo" class="logo"> <!-- Updated to absolute path -->
-        <h2>Login to Your Account</h2>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="loginEmail">Email</label>
-                <input type="email" id="loginEmail" name="email" placeholder="Enter the Email ID" required>
-            </div>
-            <div class="form-group">
-                <label for="loginPassword">Password</label>
-                <input type="password" id="loginPassword" name="password" placeholder="Enter the Password" required>
-            </div>
-            <button type="submit" id="loginButton">Login</button>
-        </form>
-        <!-- Messages will be handled by SweetAlert2 -->
-        <p>Forgot password? <a href="#" id="showForgotPassword">Reset here</a></p>
-        <p>Don't have an account? <a href="#" id="showRegister">Create new account</a></p>
-    </div>
+    <!-- Login Section -->
+    <div id="login-section" class="container hidden">
+        <img src="./logo.png" alt="VT Expanse Tracker Logo" class="logo">
+        <h2>Login to Your Account</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" name="email" placeholder="Enter the Email ID" required>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" name="password" placeholder="Enter the Password" required>
+            </div>
+            <button type="submit" id="loginButton">Login</button>
+        </form>
+        <!-- Messages will be handled by SweetAlert2 -->
+        <p>Forgot password? <a href="#" id="showForgotPassword">Reset here</a></p>
+        <p>Don't have an account? <a href="#" id="showRegister">Create new account</a></p>
+    </div>
 
-    <!-- OTP Verify Section -->
-    <div id="otp-section" class="container hidden">
-        <img src="/logo.png" alt="VT Expanse Tracker Logo" class="logo"> <!-- Updated to absolute path -->
-        <h2>Verify Your Email</h2>
-        <p>A 4-digit OTP has been sent to <span id="otpEmailDisplay"></span>.</p>
-        <form id="otpVerifyForm">
-            <div class="form-group otp-input-group">
-                <input type="text" id="otp1" maxlength="1" inputmode="numeric" pattern="[0-9]" required>
-                <input type="text" id="otp2" maxlength="1" inputmode="numeric" pattern="[0-9]" required>
-                <input type="text" id="otp3" maxlength="1" inputmode="numeric" pattern="[0-9]" required>
-                <input type="text" id="otp4" maxlength="1" inputmode="numeric" pattern="[0-9]" required>
-            </div>
-            <button type="submit">Verify OTP</button>
-        </form>
-        <!-- Messages will be handled by SweetAlert2 -->
-        <p>Didn't receive the OTP? <a href="#" id="resendOtpLink">Resend OTP</a></p>
-    </div>
+    <!-- OTP Verify Section -->
+    <div id="otp-section" class="container hidden">
+        <img src="./logo.png" alt="VT Expanse Tracker Logo" class="logo">
+        <h2>Verify Your Email</h2>
+        <p>A 4-digit OTP has been sent to <span id="otpEmailDisplay"></span>.</p>
+        <form id="otpVerifyForm">
+            <div class="form-group otp-input-group">
+                <input type="text" id="otp1" maxlength="1" inputmode="numeric" pattern="[0-9]" required>
+                <input type="text" id="otp2" maxlength="1" inputmode="numeric" pattern="[0-9]" required>
+                <input type="text" id="otp3" maxlength="1" inputmode="numeric" pattern="[0-9]" required>
+                <input type="text" id="otp4" maxlength="1" inputmode="numeric" pattern="[0-9]" required>
+            </div>
+            <button type="submit">Verify OTP</button>
+        </form>
+        <!-- Messages will be handled by SweetAlert2 -->
+        <p>Didn't receive the OTP? <a href="#" id="resendOtpLink">Resend OTP</a></p>
+    </div>
 
-    <!-- Forgot Password Section -->
-    <div id="forgot-password-section" class="container hidden">
-        <img src="/logo.png" alt="VT Expanse Tracker Logo" class="logo"> <!-- Updated to absolute path -->
-        <h2>Forgot Password</h2>
-        <p>Enter your email address to receive an OTP for password reset.</p>
-        <form id="forgotPasswordForm">
-            <div class="form-group">
-                <label for="forgotEmail">Email</label>
-                <input type="email" id="forgotEmail" name="email" placeholder="Enter the Email ID" required>
-            </div>
-            <button type="submit">Send OTP</button>
-        </form>
-        <!-- Messages will be handled by SweetAlert2 -->
-        <p>Remember your password? <a href="#" id="showLoginFromForgot">Login here</a></p>
-    </div>
+    <!-- Forgot Password Section -->
+    <div id="forgot-password-section" class="container hidden">
+        <img src="./logo.png" alt="VT Expanse Tracker Logo" class="logo">
+        <h2>Forgot Password</h2>
+        <p>Enter your email address to receive an OTP for password reset.</p>
+        <form id="forgotPasswordForm">
+            <div class="form-group">
+                <label for="forgotEmail">Email</label>
+                <input type="email" id="forgotEmail" name="email" placeholder="Enter the Email ID" required>
+            </div>
+            <button type="submit">Send OTP</button>
+        </form>
+        <!-- Messages will be handled by SweetAlert2 -->
+        <p>Remember your password? <a href="#" id="showLoginFromForgot">Login here</a></p>
+    </div>
 
-    <!-- Update Password Section -->
-    <div id="update-password-section" class="container hidden">
-        <img src="/logo.png" alt="VT Expanse Tracker Logo" class="logo"> <!-- Updated to absolute path -->
-        <h2>Update Your Password  </h2>
-        <p>Enter your new password.</p>
-        <form id="updatePasswordForm">
-            <div class="form-group">
-                <label for="updateEmail">Email</label>
-                <input type="email" id="updateEmail" name="email" required readonly>
-            </div>
-            <div class="form-group">
-                <label for="newPassword">New Password</label>
-                <input type="password" id="newPassword" name="newPassword" placeholder="Enter the New Password" required>
-            </div>
-            <div class="form-group">
-                <label for="confirmNewPassword">Confirm New Password</label>
-                <input type="password" id="confirmNewPassword" name="confirmNewPassword" placeholder="Enter the Confirm Password" required>
-            </div>
-            <button type="submit">Update Password</button>
-        </form>
-        <!-- Messages will be handled by SweetAlert2 -->
-    </div>
+    <!-- Update Password Section -->
+    <div id="update-password-section" class="container hidden">
+        <img src="./logo.png" alt="VT Expanse Tracker Logo" class="logo">
+        <h2>Update Your Password</h2>
+        <p>Enter your new password.</p>
+        <form id="updatePasswordForm">
+            <div class="form-group">
+                <label for="updateEmail">Email</label>
+                <input type="email" id="updateEmail" name="email" required readonly>
+            </div>
+            <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <input type="password" id="newPassword" name="newPassword" placeholder="Enter the New Password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirmNewPassword">Confirm New Password</label>
+                <input type="password" id="confirmNewPassword" name="confirmNewPassword" placeholder="Enter the Confirm Password" required>
+            </div>
+            <button type="submit">Update Password</button>
+        </form>
+        <!-- Messages will be handled by SweetAlert2 -->
+    </div>
 
-    <!-- SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        // --- Configuration and Global Variables ---
-        // !!! IMPORTANT: REPLACE THIS PLACEHOLDER URL with the exact Render URL of your BACKEND Web Service !!!
-        // E.g., if your backend is named 'vt-wallet-api' on Render, the URL might be: 
-        const API_BASE_URL = 'https://vt-wallet-api.onrender.com';
-        // const API_BASE_URL = 'https://YOUR-BACKEND-API-URL-GOES-HERE';
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // --- Global Variables and Helper Functions ---
+        const sections = {
+            'register': document.getElementById('register-section'),
+            'login': document.getElementById('login-section'),
+            'otp': document.getElementById('otp-section'),
+            'forgot-password': document.getElementById('forgot-password-section'),
+            'update-password': document.getElementById('update-password-section'),
+            // 'expanse' section is now a separate HTML file, so no DOM element here
+        };
 
-        const sections = {
-            'register': document.getElementById('register-section'),
-            'login': document.getElementById('login-section'),
-            'otp': document.getElementById('otp-section'),
-            'forgot-password': document.getElementById('forgot-password-section'),
-            'update-password': document.getElementById('update-password-section'),
-        };
+        let currentEmailForOTP = ''; // Stores email for OTP verification across sections
+        let resetPasswordToken = ''; // Stores the token received after OTP verification for password reset
+        let otpPurpose = ''; // Stores the purpose of the current OTP ('register', 'login', 'forgotPassword')
 
-        let currentEmailForOTP = ''; // Stores email for OTP verification across sections
-        let resetPasswordToken = ''; // Stores the token received after OTP verification for password reset
-        let otpPurpose = ''; // Stores the purpose of the current OTP ('register', 'login', 'forgotPassword')
+        function showSection(sectionId) {
+            for (const id in sections) {
+                if (sections.hasOwnProperty(id)) {
+                    sections[id].classList.remove('visible');
+                    sections[id].classList.add('hidden');
+                }
+            }
+            // Only show if the section exists in this HTML
+            if (sections[sectionId]) {
+                sections[sectionId].classList.remove('hidden');
+                sections[sectionId].classList.add('visible');
+            }
+            
+            // Clear OTP inputs whenever a section is shown (except OTP itself, handled separately)
+            if (sectionId !== 'otp') {
+                clearOtpInputs();
+            }
+        }
 
-        function showSection(sectionId) {
-            for (const id in sections) {
-                if (sections.hasOwnProperty(id)) {
-                    sections[id].classList.remove('visible');
-                    sections[id].classList.add('hidden');
-                }
-            }
-            // Only show if the section exists in this HTML
-            if (sections[sectionId]) {
-                sections[sectionId].classList.remove('hidden');
-                sections[sectionId].classList.add('visible');
-            }
-            
-            // Clear OTP inputs whenever a section is shown (except OTP itself, handled separately)
-            if (sectionId !== 'otp') {
-                clearOtpInputs();
-            }
-        }
+        // Function to clear OTP input fields
+        function clearOtpInputs() {
+            const otpInputs = document.querySelectorAll('.otp-input-group input');
+            otpInputs.forEach(input => input.value = '');
+            if (otpInputs.length > 0) {
+                otpInputs[0].focus(); // Focus the first OTP input
+            }
+        }
 
-        // Function to clear OTP input fields
-        function clearOtpInputs() {
-            const otpInputs = document.querySelectorAll('.otp-input-group input');
-            otpInputs.forEach(input => input.value = '');
-            if (otpInputs.length > 0) {
-                otpInputs[0].focus(); // Focus the first OTP input
-            }
-        }
+        // --- Navigation Links ---
+        document.getElementById('showLogin').addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection('login');
+        });
 
-        // --- Navigation Links ---
-        document.getElementById('showLogin').addEventListener('click', (e) => {
-            e.preventDefault();
-            showSection('login');
-        });
+        document.getElementById('showRegister').addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection('register');
+        });
 
-        document.getElementById('showRegister').addEventListener('click', (e) => {
-            e.preventDefault();
-            showSection('register');
-        });
+        document.getElementById('showForgotPassword').addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection('forgot-password');
+        });
 
-        document.getElementById('showForgotPassword').addEventListener('click', (e) => {
-            e.preventDefault();
-            showSection('forgot-password');
-        });
+        document.getElementById('showLoginFromForgot').addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection('login');
+        });
 
-        document.getElementById('showLoginFromForgot').addEventListener('click', (e) => {
-            e.preventDefault();
-            showSection('login');
-        });
-
-        function logout() {
-            localStorage.removeItem('jwtToken');
-            currentEmailForOTP = '';
-            resetPasswordToken = '';
-            otpPurpose = '';
-            Swal.fire({
-                icon: 'success',
-                title: 'Logged Out',
-                text: 'You have been successfully logged out.',
-                showConfirmButton: false,
-                timer: 1500
-            });
-            window.location.href = '/'; // Redirect to the authentication page
-        }
+        // Logout logic (will redirect to login on index.html)
+        // This button is not present in this index.html anymore, but keeping the function for reference
+        // if you add a logout button on Expanse.html that redirects back here.
+        function logout() {
+            localStorage.removeItem('jwtToken');
+            currentEmailForOTP = '';
+            resetPasswordToken = '';
+            otpPurpose = '';
+            Swal.fire({
+                icon: 'success',
+                title: 'Logged Out',
+                text: 'You have been successfully logged out.',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            window.location.href = '/login'; // Redirect to login page of index.html
+        }
 
 
-        // --- Register Form Submission ---
-        document.getElementById('registerForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('regUsername').value;
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPassword').value;
-            const registerButton = document.getElementById('registerButton');
+        // --- Register Form Submission ---
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const registerButton = document.getElementById('registerButton');
 
-            registerButton.disabled = true;
-            registerButton.textContent = 'Registering...';
+            registerButton.disabled = true;
+            registerButton.textContent = 'Registering...';
 
-            try {
-                // Using API_BASE_URL
-                const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, email, password })
-                });
+            try {
+                const response = await fetch('https://vt-wallet.onrender.com/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password })
+                });
 
-                const data = await response.json();
+                const data = await response.json();
 
-                if (response.ok) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Registration Successful!',
-                        text: data.message,
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                    currentEmailForOTP = email;
-                    otpPurpose = 'register'; // Set OTP purpose for registration
-                    document.getElementById('otpEmailDisplay').textContent = email;
-                    setTimeout(() => showSection('otp'), 1500);
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Registration Failed',
-                        text: data.message || 'Registration failed. Please try again.',
-                    });
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'An unexpected error occurred. Please check API_BASE_URL and connectivity.',
-                });
-            } finally {
-                registerButton.disabled = false;
-                registerButton.textContent = 'Register';
-            }
-        });
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Registration Successful!',
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    currentEmailForOTP = email;
+                    otpPurpose = 'register'; // Set OTP purpose for registration
+                    document.getElementById('otpEmailDisplay').textContent = email;
+                    setTimeout(() => showSection('otp'), 1500);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Registration Failed',
+                        text: data.message || 'Registration failed. Please try again.',
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An unexpected error occurred. Please try again.',
+                });
+            } finally {
+                registerButton.disabled = false;
+                registerButton.textContent = 'Register';
+            }
+        });
 
-        // --- Login Form Submission ---
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            const loginButton = document.getElementById('loginButton');
+        // --- Login Form Submission ---
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const loginButton = document.getElementById('loginButton');
 
-            loginButton.disabled = true;
-            loginButton.textContent = 'Logging In...';
+            loginButton.disabled = true;
+            loginButton.textContent = 'Logging In...';
 
-            try {
-                // Using API_BASE_URL
-                const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
+            try {
+                const response = await fetch('https://vt-wallet.onrender.com/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
 
-                const data = await response.json();
+                const data = await response.json();
 
-                if (response.ok) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Login Successful!',
-                        text: data.message,
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                    currentEmailForOTP = email;
-                    otpPurpose = 'login'; // Set OTP purpose for login
-                    document.getElementById('otpEmailDisplay').textContent = email;
-                    setTimeout(() => showSection('otp'), 1500);
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Login Failed',
-                        text: data.message || 'Login failed. Please check your credentials.',
-                    });
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'An unexpected error occurred. Please check API_BASE_URL and connectivity.',
-                });
-            } finally {
-                loginButton.disabled = false;
-                loginButton.textContent = 'Login';
-            }
-        });
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Login Successful!',
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    currentEmailForOTP = email;
+                    otpPurpose = 'login'; // Set OTP purpose for login
+                    document.getElementById('otpEmailDisplay').textContent = email;
+                    setTimeout(() => showSection('otp'), 1500);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Login Failed',
+                        text: data.message || 'Login failed. Please check your credentials.',
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An unexpected error occurred. Please try again.',
+                });
+            } finally {
+                loginButton.disabled = false;
+                loginButton.textContent = 'Login';
+            }
+        });
 
-        // --- OTP Input Handling ---
-        const otpInputs = document.querySelectorAll('.otp-input-group input');
-        otpInputs.forEach((input, index) => {
-            input.addEventListener('input', () => {
-                if (input.value.length === 1 && index < otpInputs.length - 1) {
-                    otpInputs[index + 1].focus();
-                }
-            });
+        // --- OTP Input Handling ---
+        const otpInputs = document.querySelectorAll('.otp-input-group input');
+        otpInputs.forEach((input, index) => {
+            input.addEventListener('input', () => {
+                if (input.value.length === 1 && index < otpInputs.length - 1) {
+                    otpInputs[index + 1].focus();
+                }
+            });
 
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace' && input.value.length === 0 && index > 0) {
-                    otpInputs[index - 1].focus();
-                }
-            });
-        });
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && input.value.length === 0 && index > 0) {
+                    otpInputs[index - 1].focus();
+                }
+            });
+        });
 
-        // --- OTP Verify Form Submission ---
-        document.getElementById('otpVerifyForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const otp = Array.from(otpInputs).map(input => input.value).join('');
-            const verifyOtpButton = e.target.querySelector('button[type="submit"]');
+        // --- OTP Verify Form Submission ---
+        document.getElementById('otpVerifyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const otp = Array.from(otpInputs).map(input => input.value).join('');
+            const verifyOtpButton = e.target.querySelector('button[type="submit"]');
 
-            if (otp.length !== 4) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Invalid OTP',
-                    text: 'Please enter a 4-digit OTP.',
-                });
-                return;
-            }
+            if (otp.length !== 4) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Invalid OTP',
+                    text: 'Please enter a 4-digit OTP.',
+                });
+                return;
+            }
 
-            if (!currentEmailForOTP || !otpPurpose) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Missing email or OTP purpose. Please go back to login/register/forgot password.',
-                });
-                setTimeout(() => showSection('login'), 3000);
-                return;
-            }
+            if (!currentEmailForOTP || !otpPurpose) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Missing email or OTP purpose. Please go back to login/register/forgot password.',
+                });
+                setTimeout(() => showSection('login'), 3000);
+                return;
+            }
 
-            verifyOtpButton.disabled = true;
-            verifyOtpButton.textContent = 'Verifying...';
+            verifyOtpButton.disabled = true;
+            verifyOtpButton.textContent = 'Verifying...';
 
-            try {
-                // Using API_BASE_URL
-                const response = await fetch(`${API_BASE_URL}/api/auth/verify-otp`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: currentEmailForOTP, otp, purpose: otpPurpose })
-                });
+            try {
+                const response = await fetch('https://vt-wallet.onrender.com/api/auth/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: currentEmailForOTP, otp, purpose: otpPurpose })
+                });
 
-                const data = await response.json();
+                const data = await response.json();
 
-                if (response.ok) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'OTP Verified!',
-                        text: data.message,
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                    clearOtpInputs(); // Clear OTP inputs after successful verification
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OTP Verified!',
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    clearOtpInputs(); // Clear OTP inputs after successful verification
 
-                    if (otpPurpose === 'forgotPassword') {
-                        resetPasswordToken = data.token; // Store the reset token
-                        document.getElementById('updateEmail').value = currentEmailForOTP; // Pre-fill email for update password
-                        setTimeout(() => showSection('update-password'), 1500);
-                    } else { // 'register' or 'login' purpose
-                        localStorage.setItem('jwtToken', data.token); // Store the JWT
-                        setTimeout(() => {
-                            window.location.href = '/Expanse.html'; // Redirect to the expense tracker page
-                        }, 1500);
-                    }
-                    currentEmailForOTP = ''; // Clear email after successful OTP verification
-                    otpPurpose = ''; // Clear OTP purpose
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Verification Failed',
-                        text: data.message || 'OTP verification failed. Please try again.',
-                    });
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'An unexpected error occurred. Please check API_BASE_URL and connectivity.',
-                });
-            } finally {
-                verifyOtpButton.disabled = false;
-                verifyOtpButton.textContent = 'Verify OTP';
-            }
-        });
+                    if (otpPurpose === 'forgotPassword') {
+                        resetPasswordToken = data.token; // Store the reset token
+                        document.getElementById('updateEmail').value = currentEmailForOTP; // Pre-fill email for update password
+                        setTimeout(() => showSection('update-password'), 1500);
+                    } else { // 'register' or 'login' purpose
+                        localStorage.setItem('jwtToken', data.token); // Store the JWT
+                        setTimeout(() => {
+                            window.location.href = '/Expanse.html'; // This line redirects to the separate Expanse.html
+                        }, 1500);
+                    }
+                    currentEmailForOTP = ''; // Clear email after successful OTP verification
+                    otpPurpose = ''; // Clear OTP purpose
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Verification Failed',
+                        text: data.message || 'OTP verification failed. Please try again.',
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An unexpected error occurred. Please try again.',
+                });
+            } finally {
+                verifyOtpButton.disabled = false;
+                verifyOtpButton.textContent = 'Verify OTP';
+            }
+        });
 
-        // --- Resend OTP Link ---
-        document.getElementById('resendOtpLink').addEventListener('click', async (e) => {
-            e.preventDefault();
-            if (!currentEmailForOTP) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Cannot resend OTP. Email not found.',
-                });
-                return;
-            }
+        // --- Resend OTP Link ---
+        document.getElementById('resendOtpLink').addEventListener('click', async (e) => {
+            e.preventDefault();
+            if (!currentEmailForOTP) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Cannot resend OTP. Email not found.',
+                });
+                return;
+            }
 
-            const resendButton = e.target;
-            resendButton.disabled = true;
-            resendButton.textContent = 'Sending...';
+            const resendButton = e.target;
+            resendButton.disabled = true;
+            resendButton.textContent = 'Sending...';
 
-            try {
-                // Use the forgot-password endpoint to resend OTP, as it generates and emails a new one
-                // Using API_BASE_URL
-                const response = await fetch(`${API_BASE_URL}/api/auth/forgot-password`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: currentEmailForOTP })
-                });
+            try {
+                // Use the forgot-password endpoint to resend OTP, as it generates and emails a new one
+                const response = await fetch('https://vt-wallet.onrender.com/api/auth/forgot-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: currentEmailForOTP })
+                });
 
-                const data = await response.json();
+                const data = await response.json();
 
-                if (response.ok) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'OTP Resent!',
-                        text: data.message,
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Resend Failed',
-                        text: data.message || 'Failed to resend OTP. Please try again.',
-                    });
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'An unexpected error occurred while resending OTP.',
-                });
-            } finally {
-                resendButton.disabled = false;
-                resendButton.textContent = 'Resend OTP';
-            }
-        });
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OTP Resent!',
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Resend Failed',
+                        text: data.message || 'Failed to resend OTP. Please try again.',
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An unexpected error occurred while resending OTP.',
+                });
+            } finally {
+                resendButton.disabled = false;
+                resendButton.textContent = 'Resend OTP';
+            }
+        });
 
-        // --- Forgot Password Form Submission ---
-        document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('forgotEmail').value;
-            const sendOtpButton = e.target.querySelector('button[type="submit"]');
+        // --- Forgot Password Form Submission ---
+        document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('forgotEmail').value;
+            const sendOtpButton = e.target.querySelector('button[type="submit"]');
 
-            sendOtpButton.disabled = true;
-            sendOtpButton.textContent = 'Sending...';
+            sendOtpButton.disabled = true;
+            sendOtpButton.textContent = 'Sending...';
 
-            try {
-                // Using API_BASE_URL
-                const response = await fetch(`${API_BASE_URL}/api/auth/forgot-password`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email })
-                });
+            try {
+                const response = await fetch('https://vt-wallet.onrender.com/api/auth/forgot-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
 
-                const data = await response.json();
+                const data = await response.json();
 
-                if (response.ok) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'OTP Sent!',
-                        text: data.message,
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                    currentEmailForOTP = email;
-                    otpPurpose = 'forgotPassword'; // Set OTP purpose for forgot password
-                    document.getElementById('otpEmailDisplay').textContent = email;
-                    setTimeout(() => showSection('otp'), 1500);
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Failed to Send OTP',
-                        text: data.message || 'Failed to send OTP. Please try again.',
-                    });
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'An unexpected error occurred. Please check API_BASE_URL and connectivity.',
-                });
-            } finally {
-                sendOtpButton.disabled = false;
-                sendOtpButton.textContent = 'Send OTP';
-            }
-        });
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'OTP Sent!',
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    currentEmailForOTP = email;
+                    otpPurpose = 'forgotPassword'; // Set OTP purpose for forgot password
+                    document.getElementById('otpEmailDisplay').textContent = email;
+                    setTimeout(() => showSection('otp'), 1500);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed to Send OTP',
+                        text: data.message || 'Failed to send OTP. Please try again.',
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An unexpected error occurred. Please try again.',
+                });
+            } finally {
+                sendOtpButton.disabled = false;
+                sendOtpButton.textContent = 'Send OTP';
+            }
+        });
 
-        // --- Update Password Form Submission (now Reset Password) ---
-        document.getElementById('updatePasswordForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
-            const email = document.getElementById('updateEmail').value;
-            const updatePasswordButton = e.target.querySelector('button[type="submit"]');
+        // --- Update Password Form Submission (now Reset Password) ---
+        document.getElementById('updatePasswordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+            const email = document.getElementById('updateEmail').value;
+            const updatePasswordButton = e.target.querySelector('button[type="submit"]');
 
-            if (newPassword !== confirmNewPassword) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Passwords Mismatch',
-                    text: 'Passwords do not match.',
-                });
-                return;
-            }
+            if (newPassword !== confirmNewPassword) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Passwords Mismatch',
+                    text: 'Passwords do not match.',
+                });
+                return;
+            }
 
-            if (newPassword.length < 6) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Password Too Short',
-                    text: 'Password must be at least 6 characters long.',
-                });
-                return;
-            }
+            if (newPassword.length < 6) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Password Too Short',
+                    text: 'Password must be at least 6 characters long.',
+                });
+                return;
+            }
 
-            if (!resetPasswordToken) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Missing Token',
-                    text: 'Missing reset token. Please restart the forgot password process.',
-                });
-                setTimeout(() => showSection('forgot-password'), 3000);
-                return;
-            }
+            if (!resetPasswordToken) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Missing Token',
+                    text: 'Missing reset token. Please restart the forgot password process.',
+                });
+                setTimeout(() => showSection('forgot-password'), 3000);
+                return;
+            }
 
-            updatePasswordButton.disabled = true;
-            updatePasswordButton.textContent = 'Updating...';
+            updatePasswordButton.disabled = true;
+            updatePasswordButton.textContent = 'Updating...';
 
-            try {
-                // Using API_BASE_URL
-                const response = await fetch(`${API_BASE_URL}/api/auth/reset-password`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, newPassword, token: resetPasswordToken })
-                });
+            try {
+                const response = await fetch('https://vt-wallet.onrender.com/api/auth/reset-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, newPassword, token: resetPasswordToken })
+                });
 
-                const data = await response.json();
+                const data = await response.json();
 
-                if (response.ok) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Password Updated!',
-                        text: data.message,
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                    currentEmailForOTP = ''; // Clear email after password update
-                    resetPasswordToken = ''; // Clear reset token
-                    otpPurpose = ''; // Clear OTP purpose
-                    setTimeout(() => showSection('login'), 1500);
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Update Failed',
-                        text: data.message || 'Password update failed. Please try again.',
-                    });
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'An unexpected error occurred. Please check API_BASE_URL and connectivity.',
-                });
-            } finally {
-                updatePasswordButton.disabled = false;
-                updatePasswordButton.textContent = 'Update Password';
-            }
-        });
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Password Updated!',
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    currentEmailForOTP = ''; // Clear email after password update
+                    resetPasswordToken = ''; // Clear reset token
+                    otpPurpose = ''; // Clear OTP purpose
+                    setTimeout(() => showSection('login'), 1500);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Update Failed',
+                        text: data.message || 'Password update failed. Please try again.',
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An unexpected error occurred. Please try again.',
+                });
+            } finally {
+                updatePasswordButton.disabled = false;
+                updatePasswordButton.textContent = 'Update Password';
+            }
+        });
 
-        // Initialize: Show the register section by default when the page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            // Check if a token exists, if so, go directly to expanse.html
-            if (localStorage.getItem('jwtToken')) {
-                window.location.href = '/Expanse.html';
-            } else {
-                showSection('register');
-            }
-        });
-    </script>
+        // Initialize: Show the register section by default when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if a token exists, if so, go directly to expanse.html
+            if (localStorage.getItem('jwtToken')) {
+                window.location.href = '/Expanse.html';
+            } else {
+                showSection('register');
+            }
+        });
+    </script>
 </body>
 </html>
