@@ -1722,8 +1722,17 @@
                 const pieChartLabels = categorySummary.map(item => item.category.charAt(0).toUpperCase() + item.category.slice(1));
                 const pieChartData = categorySummary.map(item => item.totalSpent);
                 const pieChartColors = [
-                    '#4f46e5', '#818cf8', '#a78bfa', '#c4b5fd', '#e0e7ff', '#6366f1', '#a5b4fc', '#c7d2fe', '#ddd6fe', '#f0f9ff'
-                ]; // Various shades of indigo/purple
+                    '#fbb6ce', // pastel pink
+                    '#fbd38d', // pastel orange
+                    '#faf089', // pastel yellow
+                    '#c6f6d5', // pastel green
+                    '#b2f5ea', // pastel cyan
+                    '#bee3f8', // pastel blue
+                    '#d6bcfa', // pastel purple
+                    '#fbb6ce', // pastel rose
+                    '#f9a8d4', // pastel magenta
+                    '#a7f3d0'  // pastel mint
+                    ];
 
                 const monthlyCategoryCtx = document.getElementById('monthlyCategoryChart').getContext('2d');
                 monthlyCategoryChartInstance = new Chart(monthlyCategoryCtx, {
@@ -1780,8 +1789,19 @@
                 const weeklyPieChartLabels = Object.keys(weeklyCategoryTotals).map(cat => cat.charAt(0).toUpperCase() + cat.slice(1));
                 const weeklyPieChartData = Object.values(weeklyCategoryTotals);
                 const weeklyPieChartColors = [
-                    '#10b981', '#34d399', '#6ee7b7', '#a7f3d0', '#d1fae5', '#059669', '#047857', '#064e3b', '#022c22', '#001a14'
-                ]; // Various shades of green
+                  '#ffe4e6', // very light pink
+                  '#fef3c7', // very light yellow
+                  '#dcfce7', // very light green
+                  '#ccfbf1', // very light aqua
+                  '#dbeafe', // very light blue
+                  '#ede9fe', // very light indigo
+                  '#f3e8ff', // very light purple
+                  '#fae8ff', // very light rose
+                  '#fef9c3', // soft cream
+                  '#f0fdfa'  // mint white
+                    
+                ];
+
 
                 const weeklyCategoryCtx = document.getElementById('weeklyCategoryChart').getContext('2d');
                 weeklyCategoryChartInstance = new Chart(weeklyCategoryCtx, {
