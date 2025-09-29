@@ -608,7 +608,7 @@ app.get(['/', '/login', '/otp-verify', '/forgot-password', '/update-password', '
 });
 
 app.get('/expanse.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'Expanse.html'));
+    res.sendFile(path.join(__dirname, 'public', 'expanse.html'));
 });
 
 
